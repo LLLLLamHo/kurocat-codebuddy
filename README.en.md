@@ -8,8 +8,8 @@
 
 <p align="center">
   <a href="https://qianyi.one/kurocat/?lang=en"><img src="https://img.shields.io/badge/Website-qianyi.one%2Fkurocat-d4f044?style=flat-square&logo=googlechrome&logoColor=111" alt="KuroCat Official Website" /></a>
-  <a href="https://github.com/qianyiai/kurocat/releases/latest"><img src="https://img.shields.io/github/v/release/qianyiai/kurocat?style=flat-square&color=38bdf8" alt="Latest Release" /></a>
-  <a href="https://github.com/qianyiai/kurocat/blob/main/LICENSE"><img src="https://img.shields.io/github/license/qianyiai/kurocat?style=flat-square&color=22c55e" alt="MIT License" /></a>
+  <a href="https://github.com/LLLLLamHo/kurocat-codebuddy/releases/latest"><img src="https://img.shields.io/github/v/release/LLLLLamHo/kurocat-codebuddy?style=flat-square&color=38bdf8" alt="Latest Release" /></a>
+  <a href="https://github.com/LLLLLamHo/kurocat-codebuddy/blob/main/LICENSE"><img src="https://img.shields.io/github/license/LLLLLamHo/kurocat-codebuddy?style=flat-square&color=22c55e" alt="MIT License" /></a>
   <img src="https://img.shields.io/badge/Platform-Win11%2F10%2F7%20%7C%20macOS%20%7C%20Linux%20%7C%20Android-818cf8?style=flat-square" alt="Cross Platform" />
 </p>
 
@@ -45,11 +45,11 @@ A lightweight, transparent, always-on-top desktop typing & mouse companion for *
   </tr>
 </table>
 
-## 📥 Direct Downloads (Windows / Win7 / macOS / Linux)
+## 📥 Direct Downloads (Windows / macOS / Linux)
 
-Visit [Releases](https://github.com/qianyiai/kurocat/releases) or grab the latest **`v5.1.0`** installers below (featuring **✨ 3D Volumetric Figurine Mode & 🎨 2D Classic Hand-Drawn dual engine (3D default)**, **2D/3D plush arm proportions & coat-blending upgrade**, **optional 3D collar bells & gaming headphones with automatic PC game detection (both off by default)**, **1:1 MCP AI `spots[]` custom fur in 3D & 2D**, **28s anti-1px-jitter auto-sleep**, **unclamped top-of-screen free dragging**, **4 tail-patting modes + keycap picker**, **floating side menu**, **built-in OBS transparent Browser Source**, **password privacy guard**, and **in-app auto-update**):
+Download **`v5.1.0-codebuddy`** from [Releases](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/tag/v5.1.0-codebuddy). This build adds the **🤖 CodeBuddy robot** (glowing `| <` visor, mechanical arms, and a floating hexagon) on top of upstream KuroCat. Switch to it from the right-click or tray **appearance** menu. It still includes the **✨ 3D / 🎨 2D** engines, **65% / 108-key** layouts, **password privacy guard**, **OBS transparent source**, and in-app updates:
 
-- **🪟 Windows 10 / 11 (65% Installer · `v5.1.0`)**: [**`KuroCat-5.1.0-x64-setup.exe`**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-5.1.0-x64-setup.exe) (2.15 MB) | [**Fast Mirror**](https://qianyi.one/kurocat/?lang=en#download)
+- **🪟 Windows 10 / 11 (65% Installer · `v5.1.0-codebuddy`)**: [**`KuroCat-5.1.0-codebuddy-x64-setup.exe`**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-5.1.0-codebuddy-x64-setup.exe) (2.32 MB)
   - Defaults to the 65% mechanical keyboard and creates Desktop, Start Menu, and Uninstaller entries. Switch anytime via right-click or system tray to **108-key full-size**, **🐳 BigFish**, **OBS transparent source**, or **Check for Updates**.
   - **Tips & FAQ**:
     - **Browser "isn't commonly downloaded" / Windows SmartScreen prompt**: KuroCat is 100% open-source without a commercial EV code-signing certificate.
@@ -58,18 +58,17 @@ Visit [Releases](https://github.com/qianyiai/kurocat/releases) or grab the lates
       - **SmartScreen blue dialog**: Click **More info** → **Run anyway**.
     - On stripped Win10 / LTSC builds missing `WebView2 Runtime`, install Microsoft's official 1.8 MB bootstrapper (Run as Administrator): [`MicrosoftEdgeWebview2Setup.exe`](https://go.microsoft.com/fwlink/p/?LinkId=2124703).
     - **Fullscreen Games / Admin Elevation / OBS Streaming**: Features a non-focus-stealing topmost Z-order guard for borderless & FSO games (enable **Lock Click-Through** and hold `Alt` anytime to move/right-click). If a game runs elevated, right-click the tray icon → **Restart as Administrator**. For OBS streaming without chroma-key, right-click → **Copy OBS Transparent Source URL** (`http://127.0.0.1:27421/obs`, supports **OBS-Only Mode** + synced password privacy). For kernel anti-cheat games (e.g. Valorant), use tray → **Pause Hook & Hide (Anti-Cheat Safe Mode)**.
-- **🖥️ Windows 7 SP1 (64-bit Dedicated Portable · `v5.1.0`)**: [**`KuroCat-v5.1.0-win7-x64-portable.zip`**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-win7-x64-portable.zip) (178.94 MB) | [**Fast Mirror**](https://qianyi.one/kurocat/releases/v5.1.0/KuroCat-v5.1.0-win7-x64-portable.zip)
-  - Native PE 6.01 build (zero Win8/Win10 DLL imports), bundles Microsoft's final Win7 offline **WebView2 109.0.1518.78** runtime, and uses native Win7 **256-level per-pixel anti-aliased `UpdateLayeredWindow`** compositing (zero white box with or without Aero). Extract all files and run `KuroCat.exe` alongside `WebView2Runtime`.
-- **🍎 macOS 10.15 Catalina+ (Apple Silicon M1–M4 & Intel Universal · `v5.1.0`)**: [**`KuroCat-v5.1.0-macos-universal.dmg`**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-macos-universal.dmg) (5.93 MB) | [**Fast Mirror**](https://qianyi.one/kurocat/releases/v5.1.0/KuroCat-v5.1.0-macos-universal.dmg)
-  - Open `.dmg` and drag `KuroCat.app` into **Applications**. Includes 3D/2D switcher, 65%/108-key layouts, and all 7 skins.
+- **🖥️ Windows 7 SP1**: this repository's release workflow does not build the Win7 portable. For Win7 without the CodeBuddy skin, use the upstream [`KuroCat-v5.1.0-win7-x64-portable.zip`](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-win7-x64-portable.zip).
+- **🍎 macOS 10.15 Catalina+ (Apple Silicon & Intel Universal · `v5.1.0-codebuddy`)**: [**`KuroCat-v5.1.0-codebuddy-macos-universal.dmg`**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-macos-universal.dmg) (6.30 MB)
+  - Open `.dmg` and drag `KuroCat.app` into **Applications**. Includes the 3D/2D switcher, 65%/108-key layouts, the **🤖 CodeBuddy** robot, and the original cat / 🐳 BigFish skins.
   - **First Launch (unsigned open-source app)**: If Gatekeeper warns "cannot be verified" or "damaged", run `xattr -cr /Applications/KuroCat.app` once in Terminal (future in-app updates handle this automatically).
   - **Input Permissions**: Enable `KuroCat` in **System Settings → Privacy & Security → Accessibility** and **Input Monitoring** (takes effect immediately; compatible with Karabiner-Elements).
   - **macOS Stdio MCP Path**: `/Applications/KuroCat.app/Contents/MacOS/KuroCat` with args `["--mcp"]`, or connect to `http://127.0.0.1:27420/mcp` while running.
-- **🐧 Linux / Ubuntu 22.04+ / Debian 12+ / KylinOS V11+ / UOS (`v5.1.0`)**:
-  - **x86_64**: [**`.deb` (2.38 MB)**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-linux-amd64.deb) · [**`.AppImage` (77.52 MB)**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-linux-amd64.AppImage)
-  - **ARM64**: [**`.deb` (2.34 MB)**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-linux-arm64.deb) · [**`.AppImage` (75.69 MB)**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-linux-arm64.AppImage)
+- **🐧 Linux / Ubuntu 22.04+ / Debian 12+ / KylinOS V11+ / UOS (`v5.1.0-codebuddy`)**:
+  - **x86_64**: [**`.deb` (2.56 MB)**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-linux-amd64.deb) · [**`.AppImage` (77.69 MB)**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-linux-amd64.AppImage)
+  - **ARM64**: [**`.deb` (2.52 MB)**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-linux-arm64.deb) · [**`.AppImage` (75.87 MB)**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-linux-arm64.AppImage)
   - **Requirements**: Built on Tauri v2 / Ubuntu 22.04 baseline; requires **`glibc >= 2.34`** (`.deb` requires **`libwebkit2gtk-4.1-0`** and **`libayatana-appindicator3-1`**; not compatible with Ubuntu 20.04 / `glibc 2.31` systems such as KylinOS V10 SP1).
-  - Dynamically loads X11 `XRecord` for rootless global input (with automatic `evdev` fallback on Wayland). Fast mirrors available at [`https://qianyi.one/kurocat/?lang=en#linux-download`](https://qianyi.one/kurocat/?lang=en#linux-download).
+  - Dynamically loads X11 `XRecord` for rootless global input (with automatic `evdev` fallback on Wayland).
 
 ## ✨ Core Features
 
@@ -158,7 +157,7 @@ Custom skins are stored at:
 Prerequisites: Windows 10/11 or macOS 11+, Node.js 18+, Rust toolchain (`cargo`).
 
 ```bash
-git clone https://github.com/qianyiai/kurocat.git
+git clone https://github.com/LLLLLamHo/kurocat-codebuddy.git
 cd kurocat
 npm install
 npm run tauri:dev      # Live hot-reload development

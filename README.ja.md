@@ -8,8 +8,8 @@
 
 <p align="center">
   <a href="https://qianyi.one/kurocat/?lang=ja"><img src="https://img.shields.io/badge/Website-qianyi.one%2Fkurocat-d4f044?style=flat-square&logo=googlechrome&logoColor=111" alt="KuroCat Official Website" /></a>
-  <a href="https://github.com/qianyiai/kurocat/releases/latest"><img src="https://img.shields.io/github/v/release/qianyiai/kurocat?style=flat-square&color=38bdf8" alt="Latest Release" /></a>
-  <a href="https://github.com/qianyiai/kurocat/blob/main/LICENSE"><img src="https://img.shields.io/github/license/qianyiai/kurocat?style=flat-square&color=22c55e" alt="MIT License" /></a>
+  <a href="https://github.com/LLLLLamHo/kurocat-codebuddy/releases/latest"><img src="https://img.shields.io/github/v/release/LLLLLamHo/kurocat-codebuddy?style=flat-square&color=38bdf8" alt="Latest Release" /></a>
+  <a href="https://github.com/LLLLLamHo/kurocat-codebuddy/blob/main/LICENSE"><img src="https://img.shields.io/github/license/LLLLLamHo/kurocat-codebuddy?style=flat-square&color=22c55e" alt="MIT License" /></a>
   <img src="https://img.shields.io/badge/Platform-Win11%2F10%2F7%20%7C%20macOS%20%7C%20Linux%20%7C%20Android-818cf8?style=flat-square" alt="Cross Platform" />
 </p>
 
@@ -45,11 +45,11 @@
   </tr>
 </table>
 
-## 📥 ダウンロード（Windows / Win7 / macOS / Linux）
+## 📥 ダウンロード（Windows / macOS / Linux）
 
-[Releases](https://github.com/qianyiai/kurocat/releases) または以下の最新 **`v5.1.0`** パッケージから直接入手できます（**✨ 3D フィギュアモード & 🎨 2D クラシック手描きデュアルエンジン（初期設定 3D）**、**2D/3D の前足プロポーション＆毛色なじみ刷新**、**選択式 3D 首輪ベル＆ゲーム自動検出ゲーミングヘッドセット（初期設定はいずれも OFF）**、**MCP AI カスタム模様 `spots[]` の 3D/2D 完全同期**、**1px 微振動対策付き 28 秒うたた寝**、**画面最上部まで引っかからないネイティブ自由ドラッグ**、**しっぽタイピング 4 モード**、**OBS 透過ソース**、**パスワード自動保護**、**アプリ内自動更新** を搭載）：
+[Releases](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/tag/v5.1.0-codebuddy) の **`v5.1.0-codebuddy`** から入手できます。このビルドは上流 KuroCat に **🤖 CodeBuddy ロボット**（光る `| <` バイザー、メカニカルアーム、浮遊ヘキサゴン）を追加しています。右クリックまたはトレイの外観メニューから切り替えられます。**✨ 3D / 🎨 2D**、**65% / 108 キー**、**パスワード自動保護**、**OBS 透過ソース**、アプリ内更新もそのまま使えます：
 
-- **🪟 Windows 10 / 11（65% インストーラー版 · `v5.1.0`）**：[**`KuroCat-5.1.0-x64-setup.exe`**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-5.1.0-x64-setup.exe)（2.15 MB）｜[**高速ミラー**](https://qianyi.one/kurocat/?lang=ja#download)
+- **🪟 Windows 10 / 11（65% インストーラー版 · `v5.1.0-codebuddy`）**：[**`KuroCat-5.1.0-codebuddy-x64-setup.exe`**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-5.1.0-codebuddy-x64-setup.exe)（2.32 MB）
   - 初期設定は 65% コンパクト配列。デスクトップアイコン・スタートメニューを自動作成し、右クリックやトレイから **108 フルサイズ（テンキー付）**・**🐳 クジラ娘**・**OBS 透過ソース**・**更新確認** へいつでも切替可能。
   - **よくある質問**：
     - **Edge / Chrome のダウンロード警告・SmartScreen について**：商用コード署名なしの無料オープンソースのため警告が出ることがあります。
@@ -58,18 +58,17 @@
       - **青い SmartScreen 画面**：**詳細情報** → **実行** をクリック。
     - 古い Win10 / LTSC 環境で `WebView2 Runtime` 不足が表示される場合は、Microsoft 公式 1.8 MB ブートストラップを管理者権限で実行してください：[`MicrosoftEdgeWebview2Setup.exe`](https://go.microsoft.com/fwlink/p/?LinkId=2124703)。
     - **フルスクリーンゲーム / 管理者権限 / OBS 配信**：ボーダレス・FSO ゲーム向けにフォーカスを奪わない最前面ガードを内蔵（**マウス透過ロック**＋`Alt` 一時解除がおすすめ）。管理者権限で動くゲームはトレイから **管理者として再起動** を利用してください。OBS 配信は右クリック → **OBS 透過ソース URL をコピー**（`http://127.0.0.1:27421/obs`・透過チャンネル標準対応・デスクトップ非表示の「OBS のみ表示」対応）。カーネル型アンチチート搭載ゲーム（VALORANT 等）ではトレイの **監視を一時停止して非表示** を推奨します。
-- **🖥️ Windows 7 SP1（64bit 専用ポータブル版 · `v5.1.0`）**：[**`KuroCat-v5.1.0-win7-x64-portable.zip`**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-win7-x64-portable.zip)（178.94 MB）｜[**高速ミラー**](https://qianyi.one/kurocat/releases/v5.1.0/KuroCat-v5.1.0-win7-x64-portable.zip)
-  - ネイティブ PE 6.01 ビルド。Win7 最終対応オフライン **WebView2 109.0.1518.78** を同梱し、Aero ON/OFF を問わず白枠・ギザギザゼロの **256 段階ピクセル透過（`UpdateLayeredWindow`）** に対応。すべて展開し `KuroCat.exe` と `WebView2Runtime` を同フォルダに置いて起動してください。
-- **🍎 macOS 10.15 Catalina+（Apple Silicon M1–M4 & Intel ユニバーサル · `v5.1.0`）**：[**`KuroCat-v5.1.0-macos-universal.dmg`**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-macos-universal.dmg)（5.93 MB）｜[**高速ミラー**](https://qianyi.one/kurocat/releases/v5.1.0/KuroCat-v5.1.0-macos-universal.dmg)
-  - `.dmg` を開き `KuroCat.app` を「アプリケーション」フォルダへドラッグして起動。3D/2D 切替・65%/108 キー・全 7 スキン内蔵。
+- **🖥️ Windows 7 SP1**：このリポジトリの自動ビルドには Win7 専用パッケージは含まれません。CodeBuddy スキンが不要な Win7 向けには、上流の [`KuroCat-v5.1.0-win7-x64-portable.zip`](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-win7-x64-portable.zip) を利用してください。
+- **🍎 macOS 10.15 Catalina+（Apple Silicon と Intel ユニバーサル · `v5.1.0-codebuddy`）**：[**`KuroCat-v5.1.0-codebuddy-macos-universal.dmg`**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-macos-universal.dmg)（6.30 MB）
+  - `.dmg` を開き `KuroCat.app` を「アプリケーション」フォルダへドラッグして起動。3D/2D 切替、65%/108 キー、**🤖 CodeBuddy** と従来のネコ / 🐳 クジラ娘スキンを含みます。
   - **初回起動時（未公証オープンソース）**：「開発元を確認できない」「破損しています」と表示された場合は、ターミナルで一度だけ `xattr -cr /Applications/KuroCat.app` を実行してください（次回以降のアプリ内自動更新では不要）。
   - **キー・マウス監視権限**：「システム設定 → プライバシーとセキュリティ」で **アクセシビリティ** と **入力監視** の両方に `KuroCat` を許可してください（Karabiner-Elements 併用対応）。
   - **macOS Stdio MCP パス**：`/Applications/KuroCat.app/Contents/MacOS/KuroCat`（引数 `--mcp`）、または起動中に `http://127.0.0.1:27420/mcp` へ接続。
-- **🐧 Linux / Ubuntu 22.04+ / Debian 12+ / KylinOS V11+ / UOS（`v5.1.0`）**：
-  - **x86_64**：[**`.deb`（2.38 MB）**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-linux-amd64.deb) · [**`.AppImage`（77.52 MB）**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-linux-amd64.AppImage)
-  - **ARM64**：[**`.deb`（2.34 MB）**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-linux-arm64.deb) · [**`.AppImage`（75.69 MB）**](https://github.com/qianyiai/kurocat/releases/download/v5.1.0/KuroCat-v5.1.0-linux-arm64.AppImage)
+- **🐧 Linux / Ubuntu 22.04+ / Debian 12+ / KylinOS V11+ / UOS（`v5.1.0-codebuddy`）**：
+  - **x86_64**：[**`.deb`（2.56 MB）**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-linux-amd64.deb) · [**`.AppImage`（77.69 MB）**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-linux-amd64.AppImage)
+  - **ARM64**：[**`.deb`（2.52 MB）**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-linux-arm64.deb) · [**`.AppImage`（75.87 MB）**](https://github.com/LLLLLamHo/kurocat-codebuddy/releases/download/v5.1.0-codebuddy/KuroCat-v5.1.0-codebuddy-linux-arm64.AppImage)
   - **動作要件**：Tauri v2 / Ubuntu 22.04 ベースでビルドされており、**`glibc >= 2.34`** が必要です（`.deb` 版は **`libwebkit2gtk-4.1-0`** と **`libayatana-appindicator3-1`** に依存。Ubuntu 20.04 / `glibc 2.31` ベースの KylinOS V10 SP1 には非対応）。
-  - X11 `XRecord` を動的ロードして root 権限なしでキー・マウスを取得（Wayland では `evdev` へ自動フォールバック）。ミラーは [`https://qianyi.one/kurocat/?lang=ja#linux-download`](https://qianyi.one/kurocat/?lang=ja#linux-download)。
+  - X11 `XRecord` を動的ロードして root 権限なしでキー・マウスを取得します（Wayland では `evdev` へ自動フォールバック）。
 
 ## ✨ 主な機能
 
@@ -158,7 +157,7 @@ KuroCat `v4.0.0+` は追加依存なしで **Stdio** と **ローカル Streamab
 必要環境：Windows 10/11 または macOS 11+、Node.js 18+、Rust ツールチェーン（`cargo`）。
 
 ```bash
-git clone https://github.com/qianyiai/kurocat.git
+git clone https://github.com/LLLLLamHo/kurocat-codebuddy.git
 cd kurocat
 npm install
 npm run tauri:dev      # ホットリロード開発起動
