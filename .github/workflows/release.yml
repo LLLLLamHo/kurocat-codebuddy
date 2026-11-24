@@ -71,7 +71,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          draft: true
+          draft: false
           files: |
             KuroCat-*-x64-setup.exe
 
@@ -152,7 +152,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          draft: true
+          draft: false
           files: |
             KuroCat-*-macos-universal.dmg
             KuroCat-*-macos-universal.app.tar.gz
@@ -266,7 +266,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          draft: true
+          draft: false
           files: |
             KuroCat-*-linux-${{ matrix.arch }}.deb
             KuroCat-*-linux-${{ matrix.arch }}.AppImage

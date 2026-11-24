@@ -193,7 +193,7 @@ export class CodeBuddyRenderer {
       this.ripples.push({ x: pt.x, y: pt.y, r: 2, life: 0.85 });
       this.spawnParticles(pt.x, pt.y - 6, 4, true);
     } else if (mouseBusy) {
-      const shiftBase = layout.is108 ? -88 : -38;
+      const shiftBase = layout.is108 ? -96 : -22;
       const curCharX = charX + shiftBase;
       const comfortX = Math.max(curCharX - 10, Math.min(curCharX + 92, pt.x));
       const comfortY = Math.min(layout.kbCenterY + 6, pt.y);
@@ -334,10 +334,12 @@ export class CodeBuddyRenderer {
       this.bodyTiltTarget = shySway;
       this.bodyDiveY *= Math.exp(-9 * dt);
     } else if (mouseMode) {
-      const baseShift = layout.is108 ? -125 : -38;
-      this.bodyShiftTarget = baseShift + (layout.mouseNX - 0.5) * 12;
-      this.bodyTiltTarget = -0.085;
-      this.bodyDiveY += (7 - this.bodyDiveY) * (1 - Math.exp(-10 * dt));
+      // Lean comfortably toward the mouse without crowding directly over it,
+      // so the left arm has a clear, natural reach from shoulder to mouse buttons!
+      const baseShift = layout.is108 ? -96 : -22;
+      this.bodyShiftTarget = baseShift + (layout.mouseNX - 0.5) * 10;
+      this.bodyTiltTarget = -0.075;
+      this.bodyDiveY += (3 - this.bodyDiveY) * (1 - Math.exp(-10 * dt));
     } else if (!isTyping) {
       this.bodyShiftTarget = 0;
       this.bodyTiltTarget = 0;
@@ -707,11 +709,10 @@ export class CodeBuddyRenderer {
     layout: DaFeiYuLayout,
   ): void {
     const g = this.computeGeom(now, layout);
-    // Exact lower-shoulder joint positions on robot_base.png (448x556)
-    // Placed right at the lower curve of the white shoulder domes so the 3D elbow joint
-    // and forearm emerge organically without cutting across the shoulder caps.
-    const shL = g.spritePointToWorld(0.230, 0.778);
-    const shR = g.spritePointToWorld(0.768, 0.778);
+    // Anchor strictly inside the white shoulder domes of robot_base.png (448x556)
+    // so the continuous curved 3D arm NEVER separates from the body at any reach angle!
+    const shL = g.spritePointToWorld(0.226, 0.758);
+    const shR = g.spritePointToWorld(0.772, 0.758);
     const hexAnchor = g.spritePointToWorld(0.75, 0.72);
 
     const isHappy = !layout.privacyMode && layout.petEnergy > 0.25;
@@ -944,9 +945,10 @@ export class CodeBuddyRenderer {
   }
 
   /**
-   * Draws a soft 3D-rendered vinyl-toy robot arm & cute rounded hand that matches the exact
-   * pearl-lilac studio lighting (#f4eef4 -> #d4ced3 -> #a69ea9) and charcoal joints (#474656)
-   * of robot_base.png without harsh 2D comic outlines.
+   * Draws a continuous, seamlessly shoulder-anchored 3D vinyl-toy robot arm & cute rounded hand
+   * from `(sx, sy)` inside the white shoulder dome all the way to the hand `(px, py)`.
+   * Sampling a single continuous Bézier curve guarantees the arm NEVER detaches from the body
+   * whether resting, reaching across the keyboard, clicking the mouse, or covering the visor.
    */
   private drawRobotArm(
     ctx: CanvasRenderingContext2D,
@@ -965,80 +967,73 @@ export class CodeBuddyRenderer {
     const len = Math.min(rawLen, maxLen);
     const ux = dx / rawLen;
     const uy = dy / rawLen;
-    const px = sx + ux * len;
-    const py = sy + uy * len;
     const sgn = side === 'left' ? -1 : 1;
 
     // Subtle lift arc during key tap impact for tactile bounce
-    const tapLiftY = -squash * 2.4;
-    const handX = px;
-    const handY = py + tapLiftY;
+    const tapLiftY = -squash * 2.2;
+    const handX = sx + ux * len;
+    const handY = sy + uy * len + tapLiftY;
 
-    // 1) Organic 2-segment elbow point curving gently outward like a real chibi arm
-    const flexFactor = Math.max(0.25, 1 - len / 95);
-    const elbowOut = sgn * (7.5 + flexFactor * 6.5);
-    const elbowDrop = raisedPose ? 6.0 : 3.5;
-    const ex = sx + (handX - sx) * 0.34 + elbowOut;
-    const ey = sy + (handY - sy) * 0.34 + elbowDrop;
+    const adx = handX - sx;
+    const ady = handY - sy;
+    const alen = Math.max(1, Math.hypot(adx, ady));
+    const aux = adx / alen;
+    const auy = ady / alen;
 
-    // Forearm vector from elbow to hand
-    const fdx = handX - ex;
-    const fdy = handY - ey;
-    const flen = Math.max(1, Math.hypot(fdx, fdy));
-    const fux = fdx / flen;
-    const fuy = fdy / flen;
-    const fnx = -fuy;
-    const fny = fux;
-    const fang = Math.atan2(fdy, fdx);
+    // Wrist anchor smoothly positioned right behind the rounded 3D hand
+    const wristBack = Math.min(alen * 0.36, 9.0);
+    const wx = handX - aux * wristBack;
+    const wy = handY - auy * wristBack;
 
-    // Wrist anchor right behind the rounded hand
-    const wristBack = Math.min(flen * 0.42, 9.5);
-    const wx = handX - fux * wristBack;
-    const wy = handY - fuy * wristBack;
+    // Natural gentle outward elbow bow along the continuous shoulder->wrist curve
+    const bowOut = Math.min(12, Math.max(3.5, alen * 0.17));
+    // Always bow away from torso center (outward X) + slightly downward for organic elbow curve
+    const ctrlX = (sx + wx) * 0.5 + sgn * bowOut;
+    const ctrlY = (sy + wy) * 0.5 + (raisedPose ? 7.0 : Math.min(8, alen * 0.10));
 
-    // Forearm curve control point (slightly bowed outward for plumpness)
-    const midX = (ex + wx) * 0.5 + fnx * (sgn * 1.8);
-    const midY = (ey + wy) * 0.5 + fny * (sgn * 1.8);
+    // Sample smooth spine points along quadratic Bézier from shoulder (t=0) to wrist (t=1)
+    const steps = 12;
+    const rSh = 9.4;
+    const rWrist = 7.8;
+    const pts: Array<{ x: number; y: number; nx: number; ny: number; tx: number; ty: number; r: number }> = [];
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const omt = 1 - t;
+      const x = omt * omt * sx + 2 * omt * t * ctrlX + t * t * wx;
+      const y = omt * omt * sy + 2 * omt * t * ctrlY + t * t * wy;
+      const txRaw = 2 * omt * (ctrlX - sx) + 2 * t * (wx - ctrlX);
+      const tyRaw = 2 * omt * (ctrlY - sy) + 2 * t * (wy - ctrlY);
+      const tLen = Math.max(0.001, Math.hypot(txRaw, tyRaw));
+      const tx = txRaw / tLen;
+      const ty = tyRaw / tLen;
+      const nx = -ty;
+      const ny = tx;
+      // Smoothly taper from shoulder dome width to wrist width
+      const r = rSh + (rWrist - rSh) * t;
+      pts.push({ x, y, nx, ny, tx, ty, r });
+    }
+
+    const endPt = pts[pts.length - 1];
+    const wristAng = Math.atan2(endPt.ty, endPt.tx);
+    const midPt = pts[Math.floor(steps * 0.5)];
 
     ctx.save();
 
-    // Soft cast shadow onto the keyboard/mouse underneath the whole arm
+    // 1) Continuous 3D pearl-lilac arm tube anchored strictly inside the white shoulder dome
     ctx.save();
-    ctx.shadowColor = 'rgba(18, 16, 30, 0.34)';
+    ctx.shadowColor = 'rgba(18, 16, 30, 0.30)';
     ctx.shadowBlur = 7;
-    ctx.shadowOffsetX = sgn * 1.2;
-    ctx.shadowOffsetY = 3.5;
+    ctx.shadowOffsetX = sgn * 1.0;
+    ctx.shadowOffsetY = 3.2;
 
-    // 2) Subtle dark-charcoal 3D elbow ball joint tucked smoothly under the white shoulder dome
-    const elbowR = 8.4;
-    const elbowGrad = ctx.createRadialGradient(
-      ex - 2.6,
-      ey - 2.8,
-      1.2,
-      ex,
-      ey,
-      elbowR + 1.5,
-    );
-    elbowGrad.addColorStop(0, '#6a687c');
-    elbowGrad.addColorStop(0.55, '#464556');
-    elbowGrad.addColorStop(1, '#262632');
-    ctx.fillStyle = elbowGrad;
-    ctx.beginPath();
-    ctx.arc(ex, ey, elbowR, 0, Math.PI * 2);
-    ctx.fill();
-
-    // 3) Plump 3D pearl-white tapered forearm capsule (matching robot_base.png warm-lilac lighting!)
-    const rElbow = 9.0;
-    const rWrist = 8.2;
-
-    // Cross-arm studio lighting gradient (bright top/left -> cool lilac mid -> soft slate underside)
-    const lx = fnx * 0.85 - fux * 0.25;
-    const ly = fny * 0.85 - fuy * 0.25;
+    // Cross-arm studio lighting gradient matching robot_base.png (#f6f2f7 -> #dcd6de -> #9c95a3)
+    const gx = midPt.nx * 0.9;
+    const gy = midPt.ny * 0.9;
     const armGrad = ctx.createLinearGradient(
-      midX - lx * 10,
-      midY - ly * 10,
-      midX + lx * 10,
-      midY + ly * 10,
+      midPt.x - gx * 10,
+      midPt.y - gy * 10,
+      midPt.x + gx * 10,
+      midPt.y + gy * 10,
     );
     if (side === 'left') {
       armGrad.addColorStop(0.0, '#a39ba6');
@@ -1055,75 +1050,108 @@ export class CodeBuddyRenderer {
     }
 
     ctx.beginPath();
-    ctx.moveTo(ex + fnx * rElbow, ey + fny * rElbow);
-    ctx.quadraticCurveTo(midX + fnx * 9.6, midY + fny * 9.6, wx + fnx * rWrist, wy + fny * rWrist);
-    ctx.arc(wx, wy, rWrist, fang + Math.PI / 2, fang - Math.PI / 2, true);
-    ctx.quadraticCurveTo(midX - fnx * 9.6, midY - fny * 9.6, ex - fnx * rElbow, ey - fny * rElbow);
-    ctx.arc(ex, ey, rElbow, fang - Math.PI / 2, fang + Math.PI / 2, true);
+    ctx.moveTo(pts[0].x + pts[0].nx * pts[0].r, pts[0].y + pts[0].ny * pts[0].r);
+    for (let i = 1; i <= steps; i++) {
+      ctx.lineTo(pts[i].x + pts[i].nx * pts[i].r, pts[i].y + pts[i].ny * pts[i].r);
+    }
+    ctx.arc(endPt.x, endPt.y, endPt.r, wristAng + Math.PI / 2, wristAng - Math.PI / 2, true);
+    for (let i = steps; i >= 0; i--) {
+      ctx.lineTo(pts[i].x - pts[i].nx * pts[i].r, pts[i].y - pts[i].ny * pts[i].r);
+    }
+    // Rounded blend cap buried cleanly inside the white shoulder dome
+    ctx.arc(pts[0].x, pts[0].y, pts[0].r, Math.atan2(pts[0].ty, pts[0].tx) - Math.PI / 2, Math.atan2(pts[0].ty, pts[0].tx) + Math.PI / 2, true);
     ctx.closePath();
     ctx.fillStyle = armGrad;
     ctx.fill();
     ctx.restore();
 
-    // Very soft translucent rim contour so the white forearm separates gently over white keycaps
-    ctx.strokeStyle = 'rgba(58, 55, 74, 0.26)';
+    // Soft translucent contour along the two sides only (starting past t=0.18 so shoulder dome stays seamless!)
+    ctx.strokeStyle = 'rgba(58, 55, 74, 0.25)';
     ctx.lineWidth = 1.0;
-    ctx.beginPath();
-    ctx.moveTo(ex + fnx * rElbow, ey + fny * rElbow);
-    ctx.quadraticCurveTo(midX + fnx * 9.6, midY + fny * 9.6, wx + fnx * rWrist, wy + fny * rWrist);
-    ctx.moveTo(ex - fnx * rElbow, ey - fny * rElbow);
-    ctx.quadraticCurveTo(midX - fnx * 9.6, midY - fny * 9.6, wx - fnx * rWrist, wy - fny * rWrist);
-    ctx.stroke();
-
-    // Soft glossy specular highlight streak along upper forearm
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
-    ctx.lineWidth = 2.6;
     ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.moveTo(ex - sgn * 2.2, ey - 1.5);
-    ctx.quadraticCurveTo(midX - sgn * 2.4, midY - 1.5, wx - sgn * 1.8, wy - 1.2);
+    for (let i = 2; i <= steps; i++) {
+      const lx = pts[i].x + pts[i].nx * pts[i].r;
+      const ly = pts[i].y + pts[i].ny * pts[i].r;
+      if (i === 2) ctx.moveTo(lx, ly);
+      else ctx.lineTo(lx, ly);
+    }
+    for (let i = 2; i <= steps; i++) {
+      const rx = pts[i].x - pts[i].nx * pts[i].r;
+      const ry = pts[i].y - pts[i].ny * pts[i].r;
+      if (i === 2) ctx.moveTo(rx, ry);
+      else ctx.lineTo(rx, ry);
+    }
     ctx.stroke();
 
-    // 4) Subtle 3D dark-slate wrist joint ring (curved softly around the cylinder)
+    // Soft glossy specular highlight streak along the continuous arm
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.52)';
+    ctx.lineWidth = 2.4;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (let i = 1; i <= steps - 1; i++) {
+      const hx = pts[i].x - sgn * 2.0;
+      const hy = pts[i].y - 1.4;
+      if (i === 1) ctx.moveTo(hx, hy);
+      else ctx.lineTo(hx, hy);
+    }
+    ctx.stroke();
+
+    // 2) Flush subtle 3D dark-slate elbow joint band when arm is extended (len > 36px)
+    if (alen > 36) {
+      const ep = pts[Math.floor(steps * 0.44)];
+      const eAng = Math.atan2(ep.ty, ep.tx);
+      ctx.save();
+      ctx.translate(ep.x, ep.y);
+      ctx.rotate(eAng + Math.PI / 2);
+      const elbowBandGrad = ctx.createLinearGradient(-ep.r, 0, ep.r, 0);
+      elbowBandGrad.addColorStop(0, '#2e2e3d');
+      elbowBandGrad.addColorStop(0.45, '#5d5b70');
+      elbowBandGrad.addColorStop(1, '#2f2f3e');
+      ctx.fillStyle = elbowBandGrad;
+      ctx.beginPath();
+      ctx.roundRect(-ep.r * 0.96, -2.1, ep.r * 1.92, 4.2, 2.1);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // 3) Subtle 3D dark-slate wrist joint ring right behind the hand
     ctx.save();
     ctx.translate(wx, wy);
-    ctx.rotate(fang + Math.PI / 2);
-    const cuffGrad = ctx.createLinearGradient(-8.5, 0, 8.5, 0);
+    ctx.rotate(wristAng + Math.PI / 2);
+    const cuffGrad = ctx.createLinearGradient(-8.0, 0, 8.0, 0);
     cuffGrad.addColorStop(0, '#2a2a38');
     cuffGrad.addColorStop(0.45, '#5b596e');
     cuffGrad.addColorStop(1, '#2d2d3b');
     ctx.fillStyle = cuffGrad;
     ctx.beginPath();
-    ctx.roundRect(-8.2, -2.2, 16.4, 4.4, 2.2);
+    ctx.roundRect(-7.8, -2.1, 15.6, 4.2, 2.1);
     ctx.fill();
 
     // Delicate soft lilac-purple micro highlight on the cuff
     ctx.fillStyle = 'rgba(182, 152, 255, 0.52)';
     ctx.beginPath();
-    ctx.roundRect(-3.6, -0.7, 7.2, 1.4, 0.7);
+    ctx.roundRect(-3.4, -0.65, 6.8, 1.3, 0.65);
     ctx.fill();
     ctx.restore();
 
-    // 5) Cute plump 3D pearl-white robotic hand / mitten with soft inner thumb curve
+    // 4) Cute plump 3D pearl-white robotic hand / mitten with soft inner thumb curve
     ctx.save();
     ctx.translate(handX, handY);
-    // Keep hand gently aligned with forearm direction without flipping upside-down
-    const handRot = Math.atan2(fdy, fdx) - Math.PI / 2;
-    ctx.rotate(handRot * 0.45);
+    const handRot = Math.atan2(endPt.ty, endPt.tx) - Math.PI / 2;
+    ctx.rotate(handRot * 0.42);
     const sxScale = 1 + squash * 0.14;
     const syScale = 1 - squash * 0.12;
     ctx.scale(sxScale, syScale);
 
-    // Subtle keycap contact shadow directly beneath the hand
     ctx.save();
-    ctx.shadowColor = 'rgba(20, 18, 34, 0.36)';
+    ctx.shadowColor = 'rgba(20, 18, 34, 0.34)';
     ctx.shadowBlur = 6;
-    ctx.shadowOffsetY = 2.5;
+    ctx.shadowOffsetY = 2.4;
 
-    // Main plump 3D white hand palm/mitten body
-    const handRx = 10.6;
-    const handRy = 10.0;
-    const handGrad = ctx.createRadialGradient(-3.2, -3.6, 1.4, 0.5, 0.8, 12.2);
+    const handRx = 10.4;
+    const handRy = 9.8;
+    const handGrad = ctx.createRadialGradient(-3.2, -3.6, 1.4, 0.5, 0.8, 12.0);
     handGrad.addColorStop(0.0, '#ffffff');
     handGrad.addColorStop(0.48, '#ede7ef');
     handGrad.addColorStop(0.82, '#ccc5d1');
@@ -1135,40 +1163,40 @@ export class CodeBuddyRenderer {
     ctx.fill();
 
     // Cute soft rounded inner thumb bump facing inward toward keyboard center
-    const thumbX = -sgn * 8.2;
+    const thumbX = -sgn * 8.0;
     const thumbY = -1.6;
-    const thumbGrad = ctx.createRadialGradient(thumbX - 1.2, thumbY - 1.5, 0.6, thumbX, thumbY, 5.2);
+    const thumbGrad = ctx.createRadialGradient(thumbX - 1.2, thumbY - 1.5, 0.6, thumbX, thumbY, 5.0);
     thumbGrad.addColorStop(0.0, '#fbf8fc');
     thumbGrad.addColorStop(0.6, '#dcd6df');
     thumbGrad.addColorStop(1.0, '#a39ba9');
     ctx.fillStyle = thumbGrad;
     ctx.beginPath();
-    ctx.ellipse(thumbX, thumbY, 4.4, 3.8, sgn * 0.35, 0, Math.PI * 2);
+    ctx.ellipse(thumbX, thumbY, 4.3, 3.7, sgn * 0.35, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 
     // Ultra-soft translucent edge definition so white hand never blends flatly into white keycaps
     ctx.strokeStyle = 'rgba(58, 55, 74, 0.28)';
-    ctx.lineWidth = 1.05;
+    ctx.lineWidth = 1.0;
     ctx.beginPath();
     ctx.ellipse(0, 0, handRx, handRy, 0, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Subtle soft vinyl specular highlight on upper-left of the hand
+    // Soft vinyl specular highlight on upper-left of the hand
     ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
     ctx.beginPath();
-    ctx.ellipse(-3.2, -3.4, 3.8, 2.3, -0.45, 0, Math.PI * 2);
+    ctx.ellipse(-3.2, -3.4, 3.8, 2.2, -0.45, 0, Math.PI * 2);
     ctx.fill();
 
-    // Subtle dark-slate curved knuckle seam (matches the futuristic robot glove look from cover art!)
-    ctx.strokeStyle = 'rgba(72, 70, 88, 0.24)';
-    ctx.lineWidth = 1.1;
+    // Subtle dark-slate curved knuckle seam
+    ctx.strokeStyle = 'rgba(72, 70, 88, 0.22)';
+    ctx.lineWidth = 1.05;
     ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.arc(0, 1.5, 6.4, Math.PI * 1.18, Math.PI * 1.82);
+    ctx.arc(0, 1.5, 6.2, Math.PI * 1.18, Math.PI * 1.82);
     ctx.stroke();
 
-    // Subtle soft purple-cyan bounce glow on bottom rim when actively tapping a key
+    // Subtle soft purple bounce glow on bottom rim when actively tapping a key
     if (squash > 0.08) {
       ctx.strokeStyle = `rgba(155, 125, 255, ${(squash * 0.55).toFixed(3)})`;
       ctx.lineWidth = 1.8;
