@@ -184,8 +184,12 @@ let active3d = false;
 let privacyActive = false;
 let gameActive = false;
 
+function isSpriteBreed(breedId: string | undefined): boolean {
+  return breedId === 'dafeiyu' || breedId === 'codebuddy';
+}
+
 function shouldWearHeadphonesNow(): boolean {
-  if (settings.catBreed === 'dafeiyu') return false;
+  if (isSpriteBreed(settings.catBreed)) return false;
   const hm: HeadphoneMode =
     settings.headphoneMode === 'auto' || settings.headphoneMode === 'on'
       ? settings.headphoneMode
@@ -198,7 +202,7 @@ function shouldWearHeadphonesNow(): boolean {
 function wants3DNow(): boolean {
   return (
     settings.renderMode !== '2d' &&
-    settings.catBreed !== 'dafeiyu' &&
+    !isSpriteBreed(settings.catBreed) &&
     !tailPickerOpen &&
     !isWin7Ulw &&
     !webgl3dUnavailable
@@ -376,7 +380,7 @@ function syncMenuUI(): void {
   });
   const collarRowEl = document.getElementById('collar-row');
   if (collarRowEl) {
-    collarRowEl.classList.toggle('hidden', renderMode === '2d' || settings.catBreed === 'dafeiyu');
+    collarRowEl.classList.toggle('hidden', renderMode === '2d' || isSpriteBreed(settings.catBreed));
   }
 
   const headphoneMode: HeadphoneMode =
@@ -388,7 +392,7 @@ function syncMenuUI(): void {
   });
   const headphoneRowEl = document.getElementById('headphone-row');
   if (headphoneRowEl) {
-    headphoneRowEl.classList.toggle('hidden', settings.catBreed === 'dafeiyu');
+    headphoneRowEl.classList.toggle('hidden', isSpriteBreed(settings.catBreed));
   }
 
   const headerEl = document.getElementById('menu-header');
